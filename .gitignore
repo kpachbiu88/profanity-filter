@@ -3,3 +3,4 @@ package-lock.json
 .npmrc
 dist
 mytest.ts
+tmp

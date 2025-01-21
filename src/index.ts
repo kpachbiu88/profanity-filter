@@ -1,8 +1,17 @@
 import { patternsRu, patternsEn, replacePatternsRu } from './patterns/index';
 
+//TODO: fix problem with this!fuck ass,fuck,cock and fuck\n\rsuck (with newline)
+//
 //TODO: Add and remove patterns
 // TODO:  add patterns tests: pattern don't have any symbols except "letters, numbers, ^, $, [a-z]+ , -"
 // TODO: add labels pictures to README.md
+// TODO: add finnish language patterns
+//TODO: add another languages 
+//TOOD: add language detection
+// https://code.luasoftware.com/tutorials/nodejs/javascript-regexp-for-language-detection
+// https://code.luasoftware.com/tutorials/nodejs/javascript-detect-language-of-string
+
+//TODO: add another languages https://github.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words?tab=readme-ov-file
 
 export interface FilterOptions {
   placeholder?: string
@@ -64,22 +73,15 @@ class ProfanityFilter {
   public replace(string: string): string {
     const words = string.split(" ");
     for (let i = 0; i < words.length; i++) {
-      const w = words[i].replace(/[!?,.\n\r]/g, '');
-      if (w.length < 3) continue;
+      //const wordWithSymbols = words[i].replace(/[\/\\!?,.“”'"\n\r]/g, ' ').trim();
+      const wordWithSymbols = words[i].replace(/[^a-zA-Zа-яА-ЯёЁ]/g, ' ').trim();
+      const wordParts = wordWithSymbols.split(/\s+/g);
 
-      const patterns = this.getPatterns(w);
-      const firstLetter = w.charAt(0).toLowerCase();
-      const filteredPatterns = patterns.filter(p => p.replace('^', '').charAt(0).toLowerCase() === firstLetter);
-
-      for (const p of filteredPatterns) {
-        const regexp = this.prepare(p);
-
-        const match = regexp.exec(w)
-        if (match) {
-          words[i] = words[i].replace(match[0], this.placeholder + (this.debug ? `(${w} ${p})` : ''));
-          break;
-        }
-      }
+      // if (words[i].includes('fuck')) {
+      //   console.log('TEST', words[i], wordParts)
+      // }
+      
+      words[i] = this.filter(words[i], wordParts);
     }
     return words.join(' ');
   }
@@ -91,7 +93,7 @@ class ProfanityFilter {
    * @return {String} - fixed text
    */
   public fix(string: string): string {
-    let result = string;
+    let result: string = '';
     const patternKeys = Object.keys(replacePatternsRu).reverse()
 
     for (const p of patternKeys) {
@@ -114,6 +116,30 @@ class ProfanityFilter {
    */
   public setOptions(opts: FilterOptions): void {
     Object.assign(this, opts)
+  }
+
+  /**
+   * Search and replace abusive word
+   * @param word 
+   */
+  private filter(originalWord: string, wordParts: string[]): string {
+    for (const w of wordParts) {
+      if (w.length < 3) continue;
+
+      const patterns = this.getPatterns(w);
+      const firstLetter = w.charAt(0).toLowerCase();
+      const filteredPatterns = patterns.filter(p => p.replace('^', '').charAt(0).toLowerCase() === firstLetter);
+
+      for (const p of filteredPatterns) {
+        const regexp = this.prepare(p);
+        const match = regexp.exec(w);
+        if (match) {
+          originalWord = originalWord.replaceAll(match[0], this.placeholder);
+          if (this.debug) console.log(`DEBUG: ${w} ${p}`)
+        }
+      }
+    }
+    return originalWord;
   }
 
   private prepare(pattern: string): RegExp {

@@ -1,4 +1,4 @@
-# profanity-filter
+# swearing-filter
 
 This Regex based TypeScript library provides robust and customizable filtering of swear words and offensive language from text. 
 
@@ -16,7 +16,58 @@ This Regex based TypeScript library provides robust and customizable filtering o
 
 ## Support languages
 
-English, Russian
+English, Russian, Finnish [Contribute more languages](#Contribution)
+
+## Get started
+
+```sh
+npm i swearing-filter
+```
+
+### Installation
+
+```js
+// Using Node.js `require()`
+const swearingFilter = require('swearing-filter');
+
+// Using ES6 imports
+import swearingFilter from 'swearing-filter';
+```
+
+### Usage
+
+```js
+{
+  // Placeholder for replacement swear words
+  placeholder: "***",
+
+  // Array of language for filtration
+  languages: ['ru', 'en'],
+
+ // In debug mode you can see a pattern, that was applied, and the original word
+  debug: false
+}
+```
+
+### Functions
+
+```js
+const swearingFilter = new swearingFilter({
+  // options here
+});
+
+// Check if there any swear words in the text
+swearingFilter.isBad('Original message with swear words'); 
+// return: true
+
+// Replace swear words from string
+swearingFilter.replace('Original message with swear words'); 
+// return: string (cleaned text)
+
+// Fixing swear words inside string
+swearingFilter.fix('Original message with swear words'); 
+// return: string (fixed text)
+```
 
 ## Contribution
 We are actively seeking new contributors to help expand and refine our filtering rules. 
@@ -34,49 +85,10 @@ Join us in making this library more robust and versatile for everyone.
 | ass[a-z]+  |   ❌  |    ✅   |     ❌    |    ✅   |
 | ^ass[a-z]+ |   ❌  |    ✅   |     ❌    |    ❌   |
 
-Please, combine rules to increase speed:
+Combine rules to increase speed:
 
 ``^ass$|^asshole$``
 
-## Get started
+Escape regex special symbols: ``., +, *, ?, ^, $, (, ), [, ], {, }, |, \.`` in patterns, for example:
 
-```sh
-npm i profanity-filter
-```
-
-### Installation
-
-```js
-// Using Node.js `require()`
-const profanityFilter = require('profanity-filter');
-
-// Using ES6 imports
-import profanityFilter from 'profanity-filter';
-```
-
-### Usage
-
-```js
-const censor = new Censure({
-  placeholder: "***",
-  languages: ['ru'|'en'],
-  debug: false
-});
-
-```
-
-### Functions
-
-```js
-// Check if there any swear words in the text
-profanityFilter.isBad('Original message with swear words'); 
-// return: true
-
-// Replace swear words from string
-profanityFilter.replace('Original message with swear words'); 
-// return: string (cleaned text)
-
-// Fixing swear words inside string
-profanityFilter.fix('Original message with swear words'); 
-// return: string (fixed text)
-```
+``^\\$shi\\+$``

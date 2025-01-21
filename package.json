@@ -1,8 +1,8 @@
 {
-  "name": "profanity-filter",
+  "name": "swearing-filter",
   "version": "1.0.0",
-  "description": "Dirty russian/english words filter",
-  "keywords": ["censure", "filter", "profanity", "profane ", "vulgar", "obscene", "russian", "english"],
+  "description": "Profanity filter for russian/english/finnish etc.",
+  "keywords": ["censure", "filter", "swear", "profanity", "profane ", "vulgar", "obscene", "russian", "english"],
   "author": "Konstantin Nikolaev <twozebras.nikolaev@gmail.com>",
   "license": "MIT",
   "type": "module",
