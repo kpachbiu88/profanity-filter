@@ -1,13 +1,11 @@
 import { patternsRu, patternsEn, replacePatternsRu } from './patterns/index';
 
-//TODO: fix problem with this!fuck ass,fuck,cock and fuck\n\rsuck (with newline)
-//
-//TODO: Add and remove patterns
-// TODO:  add patterns tests: pattern don't have any symbols except "letters, numbers, ^, $, [a-z]+ , -"
+// TODO: Add and remove patterns
+// TODO: add patterns tests: pattern don't have any symbols except "letters, numbers, ^, $, [a-z]+ , -"
 // TODO: add labels pictures to README.md
 // TODO: add finnish language patterns
-//TODO: add another languages 
-//TOOD: add language detection
+// TODO: add another languages 
+// TODO: add language detection
 // https://code.luasoftware.com/tutorials/nodejs/javascript-regexp-for-language-detection
 // https://code.luasoftware.com/tutorials/nodejs/javascript-detect-language-of-string
 
@@ -22,19 +20,19 @@ export interface FilterOptions {
 class ProfanityFilter {
   /**
    * Character used to replace profane words.
-   * @type {string} placeHolder - Character used to replace profane words.
+   * @type {string}
    */
   placeholder: string = '***'
 
   /**
    * Array of supported languages.
-   * @type {string[]} languages - Array of supported languages.
+   * @type {string[]}
    */
   languages: string[] = ['ru', 'en']
 
   /**
-   * In debug mode you can see original word and find out which pattern caused the trigger
-   * @type {boolean} placeHolder - Character used to replace profane words.
+   * In debug mode you can see original word and find out which pattern caused the trigger.
+   * @type {boolean}
    */
   debug: boolean = false
   
@@ -48,49 +46,61 @@ class ProfanityFilter {
   }
 
   /**
-   * Searches if there any abusive words in the text
-   *
-   * @param {String} string - original text
-   * @return {Boolean} - is there any abusive words in our string
+   * Searches if there are any abusive words in the text.
+   * @param {string} string - Original text.
+   * @return {boolean} - Returns true if there are any abusive words in the string, otherwise false.
    */
   public isBad(string: string): boolean {
-    const patterns = this.getPatterns(string);
-    for (const p of patterns) {
-      let regexp = this.prepare(p.replace('^|\$', ''));
-      if (regexp.test(string)) {
-        return true;
+    const words = string.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      const wordParts = this.getCleanedWords(words[i])
+      
+      for (const w of wordParts) {
+        if (w.length < 3) continue;
+        const match = this.search(w)
+        if (match) {
+          return true
+        }
       }
     }
-    return false;
+    return false
   }
 
   /**
-   * Replace abusive words from string
-   *
-   * @param {String} string - original text	 
-   * @return {String} - cleaned text
+   * Replaces abusive words in the string.
+   * @param {string} string - Original text.
+   * @return {string} - Cleaned text with abusive words replaced.
    */
   public replace(string: string): string {
     const words = string.split(" ");
     for (let i = 0; i < words.length; i++) {
-      //const wordWithSymbols = words[i].replace(/[\/\\!?,.“”'"\n\r]/g, ' ').trim();
-      const wordWithSymbols = words[i].replace(/[^a-zA-Zа-яА-ЯёЁ]/g, ' ').trim();
-      const wordParts = wordWithSymbols.split(/\s+/g);
-
-      // if (words[i].includes('fuck')) {
-      //   console.log('TEST', words[i], wordParts)
-      // }
+      const wordParts = this.getCleanedWords(words[i])
       
-      words[i] = this.filter(words[i], wordParts);
+      for (const w of wordParts) {
+        if (w.length < 3) continue;
+        const match = this.search(w)
+        if (match) {
+          words[i] = words[i].replaceAll(match[0], this.placeholder);
+        }
+      }
     }
     return words.join(' ');
   }
 
   /**
-   * Fixing abusive words inside string
-   * 
-   * @param {String} string - original text	 
-   * @return {String} - fixed text
+   * Cleans the input string by removing non-alphabetic characters and splitting into words.
+   * @param {string} string - Original text.
+   * @return {string[]} - Array of cleaned words.
+   */
+  private getCleanedWords(string: string): string[] {
+    const wordWithoutSymbols = string.replace(/[^a-zA-Zа-яА-ЯёЁ]/g, ' ').trim();
+    return wordWithoutSymbols.split(/\s+/g);
+  }
+
+  /**
+   * Fixes abusive words inside the string.
+   * @param {string} string - Original text.
+   * @return {string} - Fixed text with abusive words corrected.
    */
   public fix(string: string): string {
     let result: string = '';
@@ -111,41 +121,48 @@ class ProfanityFilter {
   }
 
   /**
-   * Change options
-   * @param opts 
+   * Changes the filter options.
+   * @param {FilterOptions} opts - Options to configure the filter.
    */
   public setOptions(opts: FilterOptions): void {
     Object.assign(this, opts)
   }
 
   /**
-   * Search and replace abusive word
-   * @param word 
+   * Searches for an abusive word in the given word.
+   * @param {string} word - Original word.
+   * @return {RegExpExecArray | null} - Returns the match if found, otherwise null.
    */
-  private filter(originalWord: string, wordParts: string[]): string {
-    for (const w of wordParts) {
-      if (w.length < 3) continue;
-
-      const patterns = this.getPatterns(w);
-      const firstLetter = w.charAt(0).toLowerCase();
-      const filteredPatterns = patterns.filter(p => p.replace('^', '').charAt(0).toLowerCase() === firstLetter);
-
-      for (const p of filteredPatterns) {
-        const regexp = this.prepare(p);
-        const match = regexp.exec(w);
-        if (match) {
-          originalWord = originalWord.replaceAll(match[0], this.placeholder);
-          if (this.debug) console.log(`DEBUG: ${w} ${p}`)
-        }
+  private search(word: string): RegExpExecArray | null {
+    const patterns = this.getPatterns(word);
+    const firstLetter = word.charAt(0).toLowerCase();
+    const filteredPatterns = patterns.filter(p => p.replace('^', '').charAt(0).toLowerCase() === firstLetter);
+    
+    for (const p of filteredPatterns) {
+      const regexp = this.prepare(p);
+      const match = regexp.exec(word);
+      if (match) {
+        if (match && this.debug) console.debug(`DEBUG: ${word} ${p}`)
+        return match
       }
     }
-    return originalWord;
+    return null
   }
 
+  /**
+   * Prepares a regular expression pattern.
+   * @param {string} pattern - Pattern to prepare.
+   * @return {RegExp} - Prepared regular expression.
+   */
   private prepare(pattern: string): RegExp {
     return new RegExp(pattern, 'ui');
   }
 
+  /**
+   * Gets the patterns for the given string based on the supported languages.
+   * @param {string} string - Original text.
+   * @return {string[]} - Array of patterns.
+   */
   private getPatterns(string: string): string[] {
     if (this.languages.includes('ru') && /[а-я]+/ui.test(string)) {
       return patternsRu;
@@ -156,14 +173,23 @@ class ProfanityFilter {
     }
   }
 
+  /**
+   * Checks if the first character of the string is uppercase.
+   * @param {string} string - Original text.
+   * @return {boolean} - Returns true if the first character is uppercase, otherwise false.
+   */
   private checkFirstChar(string: string): boolean {
     const first = string.substring(0, 1);
     return (first.toLowerCase() !== first);
   }
 
+  /**
+   * Capitalizes the first character of the string.
+   * @param {string} string - Original text.
+   * @return {string} - Text with the first character capitalized.
+   */
   private upFirstChar(string: string): string {
     const words = string.split(' ');
-
     words[0] = words[0].slice(0, 1).toUpperCase() + words[0].slice(1);
 
     return words.join(' ');

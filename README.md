@@ -4,7 +4,7 @@ This Regex based TypeScript library provides robust and customizable filtering o
 
 ## Features
 
-**Multiple filtering rules**:** Regular expression-based filtering for highly flexible control.
+**Multiple filtering rules**: Regular expression-based filtering for highly flexible control.
 
 **Customizable word lists:** Easily add, remove, or modify swear words to tailor the filter to your specific needs and context. Support for multiple languages is easily implemented by adding language-specific word lists.
 
@@ -16,7 +16,9 @@ This Regex based TypeScript library provides robust and customizable filtering o
 
 ## Support languages
 
-English, Russian, Finnish [Contribute more languages](#Contribution)
+English, Russian, Finnish 
+
+[Welcome to contribute to adding more languages](#Contribution)
 
 ## Get started
 
@@ -60,10 +62,6 @@ const swearingFilter = new swearingFilter({
 swearingFilter.isBad('Original message with swear words'); 
 // return: true
 
-// Replace swear words from string
-swearingFilter.replace('Original message with swear words'); 
-// return: string (cleaned text)
-
 // Fixing swear words inside string
 swearingFilter.fix('Original message with swear words'); 
 // return: string (fixed text)
@@ -74,7 +72,7 @@ We are actively seeking new contributors to help expand and refine our filtering
 Whether you have ideas for new regex patterns, improvements to existing ones, or support for additional languages, your contributions are welcome. 
 Join us in making this library more robust and versatile for everyone.
 
-### Regex rules support:
+### Supported regex rules:
 
 | Regex rule |  ass   |  asset  |  compass  |  passed  |
 |:-----------|:------:|:-------:|:---------:|:--------:|
@@ -89,6 +87,6 @@ Combine rules to increase speed:
 
 ``^ass$|^asshole$``
 
-Escape regex special symbols: ``., +, *, ?, ^, $, (, ), [, ], {, }, |, \.`` in patterns, for example:
+Escape regex special symbols: ``., +, *, ?, ^, $, (, ), [, ], {, }, |, \.`` in patterns by using ``\\``, for example:
 
-``^\\$shi\\+$``
+``^\\$shi\\+$`` - $ and + was escaped
