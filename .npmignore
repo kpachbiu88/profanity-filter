@@ -2,3 +2,5 @@ tests/
 jest.config.ts
 src/
 tsconfig.json
+coverage/
+tmp/

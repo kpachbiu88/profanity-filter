@@ -2,5 +2,5 @@ node_modules
 package-lock.json
 .npmrc
 dist
-mytest.ts
+coverage
 tmp

@@ -1,5 +1,11 @@
 # swearing-filter
 
+[CI/CD](https://img.shields.io/badge/CD%2FCI-grey?logo=github)
+[coverage](https://img.shields.io/badge/coverage-93%25-brightgreen?logo=jest)
+[nodejs](https://img.shields.io/node/v/swearing-filter)
+[![download/month](https://img.shields.io/npm/dm/swearing-filter)](https://www.npmjs.com/package/swearing-filter)
+[licence](https://img.shields.io/github/license/kpachbiu88/swearing-filter)
+
 This Regex based TypeScript library provides robust and customizable filtering of swear words and offensive language from text. 
 
 ## Features
@@ -14,11 +20,13 @@ This Regex based TypeScript library provides robust and customizable filtering o
 
 **Easy integration:** Clean, well-documented API for seamless integration into any TypeScript project.
 
+**Zero dependency**: It's built entirely from standard library components, ensuring minimal size, maximum portability, and reduced risk of conflicts with other libraries in your project.
+
 ## Support languages
 
 English, Russian, Finnish 
 
-[Welcome to contribute to adding more languages](#Contribution)
+[Welcome to contribute more languages](#Contribution)
 
 ## Get started
 
@@ -62,7 +70,7 @@ const swearingFilter = new swearingFilter({
 swearingFilter.isBad('Original message with swear words'); 
 // return: true
 
-// Fixing swear words inside string
+// Fixing swear words inside string (only for Russian language)
 swearingFilter.fix('Original message with swear words'); 
 // return: string (fixed text)
 ```
@@ -74,19 +82,19 @@ Join us in making this library more robust and versatile for everyone.
 
 ### Supported regex rules:
 
-| Regex rule |  ass   |  asset  |  compass  |  passed  |
-|:-----------|:------:|:-------:|:---------:|:--------:|
-| ass        |   ✅  |    ✅   |     ✅    |    ✅   |
-| ^ass       |   ✅  |    ✅   |     ❌    |    ❌   |
-| ass$       |   ✅  |    ❌   |     ✅    |    ❌   |
-| ^ass$      |   ✅  |    ❌   |     ❌    |    ❌   |
-| ass[a-z]+  |   ❌  |    ✅   |     ❌    |    ✅   |
-| ^ass[a-z]+ |   ❌  |    ✅   |     ❌    |    ❌   |
+| Regex rule  |  ass   |  asset  |  compass  |  passed  |
+|:----------- |:------:|:-------:|:---------:|:--------:|
+| ass         |   ✅  |    ✅   |     ✅    |    ✅   |
+| ^ass        |   ✅  |    ✅   |     ❌    |    ❌   |
+| ass$        |   ✅  |    ❌   |     ✅    |    ❌   |
+| ^ass$       |   ✅  |    ❌   |     ❌    |    ❌   |
+| ass[a-z]+   |   ❌  |    ✅   |     ❌    |    ✅   |
+| ^ass[a-z]+  |   ❌  |    ✅   |     ❌    |    ❌   |
 
 Combine rules to increase speed:
 
 ``^ass$|^asshole$``
 
-Escape regex special symbols: ``., +, *, ?, ^, $, (, ), [, ], {, }, |, \.`` in patterns by using ``\\``, for example:
+Escape regex special symbols: ``.+*?^$()[]{}|\`` in words by using ``\\``, for example:
 
-``^\\$shi\\+$`` - $ and + was escaped
+``^\\$hit$``, word "$hit" and $ was escaped

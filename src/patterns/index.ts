@@ -1,7 +1,9 @@
-import ru from './ru';
-import en from './en';
-import replaceRu from './replace_ru';
+import patternsRu from './ru';
+import patternsEn from './en';
+import patternsFi from './fi';
+import replaceRu from '../replaces/ru';
 
-export const patternsRu = ru
-export const patternsEn = en
-export const replacePatternsRu = replaceRu
+export const ru = patternsRu;
+export const en = patternsEn;
+export const fi = patternsFi;
+export const replacePatternsRu = replaceRu;

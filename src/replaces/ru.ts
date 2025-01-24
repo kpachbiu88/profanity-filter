@@ -11,7 +11,7 @@
 * @todo make replacements shorter
 * 
 */
-const replace_patterns_ru: Record<string, string> = {
+const replaceRu: Record<string, string> = {
     // А
     'анал': 'задний проход',
     'анус': 'задний проход',
@@ -3922,4 +3922,4 @@ const replace_patterns_ru: Record<string, string> = {
     'ялдометр': 'мужской половой орган большого размера'
 };
 
-export default replace_patterns_ru;
+export default replaceRu;
