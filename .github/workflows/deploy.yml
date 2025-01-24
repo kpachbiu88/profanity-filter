@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,10 +17,10 @@ jobs:
         with:
           node-version: 22
       - run: npm i
-      #- run: npm publish --access public
+      - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-   # https://dev.to/ayoub3bidi/quick-tutorial-how-to-add-a-release-github-workflow-56ib      
+   
   release:
     name: Release pushed tag
     runs-on: ubuntu-latest
