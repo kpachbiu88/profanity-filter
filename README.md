@@ -1,10 +1,10 @@
 # swearing-filter
 
-[CI/CD](https://img.shields.io/badge/CD%2FCI-grey?logo=github)
-[coverage](https://img.shields.io/badge/coverage-93%25-brightgreen?logo=jest)
-[nodejs](https://img.shields.io/node/v/swearing-filter)
+[![CI/CD](https://img.shields.io/badge/CD%2FCI-grey?logo=github)]
+[![coverage](https://img.shields.io/badge/coverage-93%25-brightgreen?logo=jest)]
+[![nodejs](https://img.shields.io/node/v/swearing-filter)]
 [![download/month](https://img.shields.io/npm/dm/swearing-filter)](https://www.npmjs.com/package/swearing-filter)
-[licence](https://img.shields.io/github/license/kpachbiu88/swearing-filter)
+[![licence](https://img.shields.io/github/license/kpachbiu88/swearing-filter)]
 
 This Regex based TypeScript library provides robust and customizable filtering of swear words and offensive language from text. 
 
