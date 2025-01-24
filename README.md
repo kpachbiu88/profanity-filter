@@ -44,7 +44,7 @@ const swearingFilter = require('swearing-filter');
 import swearingFilter from 'swearing-filter';
 ```
 
-### Usage
+### Options
 
 ```js
 {
@@ -59,7 +59,7 @@ import swearingFilter from 'swearing-filter';
 }
 ```
 
-### Functions
+### Usage
 
 ```js
 const swearingFilter = new swearingFilter({
@@ -97,4 +97,4 @@ Combine rules to increase speed:
 
 Escape regex special symbols: ``.+*?^$()[]{}|\`` in words by using ``\\``, for example:
 
-``^\\$hit$``, word "$hit" and $ was escaped
+``^\\$hit$``, word "$hit" and ``$`` was escaped
