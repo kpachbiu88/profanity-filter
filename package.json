@@ -24,7 +24,7 @@
   "module": "./dist/esm/lib.js",
   "types": "./dist/types/index.d.ts",
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest",
     "build": "npm-run-all build:clean build:esm build:cjs",
     "build:clean": "rimraf -rf ./dist",
     "build:esm": "tsc --module esnext --outDir dist/esm/ && echo {\"type\": \"module\"} > dist/esm/package.json",
