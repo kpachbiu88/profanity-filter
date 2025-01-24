@@ -95,6 +95,6 @@ Combine rules to increase speed:
 
 ``^ass$|^asshole$``
 
-Escape regex special symbols: ``.+*?^$()[]{}|\`` in words by using ``\\``, for example:
+Escape regex special symbols: ``.+*?^$()[]{}|\`` in words by using ``\\``.
 
-``^\\$hit$``, word "$hit" and ``$`` was escaped
+For example in rule ``^\\$hit$``, word ``"$hit"`` and ``$`` was escaped
