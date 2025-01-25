@@ -1,4 +1,11 @@
 import ProfanityFilter from '../src';
+import * as allPatterns from '../src/patterns';
+
+jest.mock('../src/patterns', () => ({
+  en: ["^fuck", "shit$", "^bitch$"],
+  fi: ["^vittu$"],
+  ru: ["^ебать"]
+}));
 
 describe('ProfanityFilter', () => {
   let filter: ProfanityFilter;
@@ -8,24 +15,26 @@ describe('ProfanityFilter', () => {
     filter = new ProfanityFilter();
   });
 
-  it('should detect bad words', () => {
-    expect(filter.isBad(`This is a ${badWord}`)).toBe(true);
-    expect(filter.isBad('This is a clean sentence')).toBe(false);
-  });
+  describe('Core public methods', () => {
+    it('should detect bad words', () => {
+      expect(filter.isBad(`This is a ${badWord}`)).toBe(true);
+      expect(filter.isBad('This is a clean sentence')).toBe(false);
+    });
 
-  it('should replace bad words with placeholder', () => {
-    expect(filter.replace(`This is a ${badWord}`)).toBe('This is a ***');
-    expect(filter.replace('This is a clean sentence')).toBe('This is a clean sentence');
-  });
+    it('should replace bad words with placeholder', () => {
+      expect(filter.replace(`This is a ${badWord}`)).toBe('This is a ***');
+      expect(filter.replace('This is a clean sentence')).toBe('This is a clean sentence');
+    });
 
-  it('should fix bad words', () => {
-    expect(filter.fix('ебать')).toBe('иметь интимную близость');
-  });
+    it('should fix bad words', () => {
+      expect(filter.fix('ебать')).toBe('иметь интимную близость');
+    });
 
-  it('should set options correctly', () => {
-    filter.setOptions({ placeholder: '###', debug: true });
-    expect(filter.placeholder).toBe('###');
-    expect(filter.debug).toBe(true);
+    it('should set options correctly', () => {
+      filter.setOptions({ placeholder: '###', debug: true });
+      expect(filter.placeholder).toBe('###');
+      expect(filter.debug).toBe(true);
+    });
   });
 
   it('should handle different languages', () => {
@@ -79,6 +88,36 @@ describe('ProfanityFilter', () => {
     expect(filter.replace(text)).toBe(expected);
   });
 
-  //TODO: detect correct letter set - Latin or Cyrillic
+  describe('Alphabet detection', () => {
+    it('should return patterns for Russian language', () => {
+      filter.setOptions({ languages: ['ru'] });
+      const patterns = (filter as any).getPatterns('ебать');
+      expect(patterns).toEqual(expect.arrayContaining(allPatterns.ru));
+    });
+
+    it('should return patterns for English language', () => {
+      filter.setOptions({ languages: ['en'] });
+      const patterns = (filter as any).getPatterns('fuck');
+      expect(patterns).toEqual(expect.arrayContaining(allPatterns.en));
+    });
+
+    it('should return patterns for Finnish language', () => {
+      filter.setOptions({ languages: ['fi'] });
+      const patterns = (filter as any).getPatterns('vittu');
+      expect(patterns).toEqual(expect.arrayContaining(allPatterns.fi));
+    });
+
+    it('should return combined patterns for multiple languages', () => {
+      filter.setOptions({ languages: ['en', 'fi'] });
+      const patterns = (filter as any).getPatterns('fuck');
+      expect(patterns).toEqual(expect.arrayContaining([...allPatterns.en, ...allPatterns.fi]));
+    });
+
+    it('should return empty patterns for unsupported language', () => {
+      filter.setOptions({ languages: ['ru'] });
+      const patterns = (filter as any).getPatterns('hello');
+      expect(patterns).toEqual([]);
+    });
+  });
 
 });
