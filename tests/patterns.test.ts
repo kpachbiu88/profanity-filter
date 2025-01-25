@@ -1,5 +1,4 @@
 import ProfanityFilter from '../src';
-import * as patterns from '../src/patterns'
 
 jest.mock('../src/patterns', () => ({
   en: ["ass", "^bitch", "shit$", "^cock$", "dick[a-z]+", "^bastard[a-z]+"],

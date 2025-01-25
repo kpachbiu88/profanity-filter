@@ -1,7 +1,7 @@
 {
   "name": "swearing-filter",
   "version": "1.0.3",
-  "description": "Profanity filter for russian/english/finnish etc.",
+  "description": "Multilingual profanity filter supporting English, Russian, Finnish, and more",
   "keywords": [
     "censure",
     "filter",
@@ -33,12 +33,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kpachbiu88/profanity-filter.git"
+    "url": "git+https://github.com/kpachbiu88/swearing-filter.git"
   },
   "bugs": {
-    "url": "https://github.com/kpachbiu88/profanity-filter/issues"
+    "url": "https://github.com/kpachbiu88/swearing-filter/issues"
   },
-  "homepage": "https://github.com/kpachbiu88/profanity-filter#readme",
+  "homepage": "https://github.com/kpachbiu88/swearing-filter#readme",
   "directories": {
     "test": "tests"
   },

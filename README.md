@@ -70,9 +70,13 @@ const swearingFilter = new swearingFilter({
 swearingFilter.isBad('Original message with swear words'); 
 // return: true
 
+// Replace swear words with placeholder
+swearingFilter.replace('Original message with swear words'); 
+// return: "Original message with ***"
+
 // Fixing swear words inside string (only for Russian language)
 swearingFilter.fix('Original message with swear words'); 
-// return: string (fixed text)
+// return: "Original message with fixed text"
 ```
 
 ## Contribution

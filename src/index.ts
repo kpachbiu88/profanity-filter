@@ -2,11 +2,8 @@ import { ru, en, fi } from './patterns';
 import { replaceRu } from './replaces';
 
 //TODO: check masked swear words like fagg1t (faggit)
-
 // TODO: Add and remove patterns
 
-// TODO: add labels pictures to README.md
-// TODO: add another languages 
 // TODO: add language detection
 // https://code.luasoftware.com/tutorials/nodejs/javascript-regexp-for-language-detection
 // https://code.luasoftware.com/tutorials/nodejs/javascript-detect-language-of-string
@@ -105,17 +102,11 @@ class ProfanityFilter {
     for (let i = 0; i < words.length; i++) {
       const wordParts = this.getCleanedWords(words[i]);
 
-      // console.log('WORD PARTS', wordParts)
-      
       for (const w of wordParts) {
         if (w.length < 3) continue;
         const match = this.search(w)
 
         if (match) {
-          //if (w.includes('aaavittuaa')) {
-            // console.log('WORD', words[i])
-            // console.log('MATCH', match)
-          //}
           //TODO: replace only exact search
           words[i] = words[i].replaceAll(match.input, this.placeholder);
         }
@@ -132,12 +123,6 @@ class ProfanityFilter {
   private getCleanedWords(string: string): string[] {
     let result: string = string
 
-    // if (this.languages.includes('en') || this.languages.includes('fi')) {
-    //   console.log('LATIN')
-    //   result = string.replace(/[^\p{Script=Latin}]/ug, ' ').trim();
-    // } else if (this.languages.includes('ru')) {
-    //   result = string.replace(/[^\p{Script=Cyrillic}]/ug, ' ').trim();
-    // }
     if (/\p{Script=Latin}/ui.test(string)) {
       result = string.replace(/[^\p{Script=Latin}]/ug, ' ').trim();
     } else if (/\p{Script=Latin}/ui.test(string)) {
@@ -193,11 +178,6 @@ class ProfanityFilter {
     for (const p of filteredPatterns) {
       const regexp = this.prepare(p);
       const match = regexp.exec(word);
-
-      // if (word.includes('aaavittuaa')) {
-      //   console.log('FILTRED', filteredPatterns)
-      //   console.log('TEST', word, firstLetter, p, match)
-      // }
 
       if (match) {
         if (match && this.debug) console.debug(`DEBUG: ${word} ${p}`)
