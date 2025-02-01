@@ -1,6 +1,5 @@
 /**
  * Set an array of finnish abusive words
- * 
  */
 const fi: string[] = [
   "^alfred nussi$",

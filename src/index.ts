@@ -1,29 +1,5 @@
-import { ru, en, fi } from './patterns';
+import { ru, en, fi, sv } from './patterns';
 import { replaceRu } from './replaces';
-
-//TODO: check masked swear words like fagg1t (faggit)
-// TODO: Add and remove patterns
-
-// TODO: add language detection
-// https://code.luasoftware.com/tutorials/nodejs/javascript-regexp-for-language-detection
-// https://code.luasoftware.com/tutorials/nodejs/javascript-detect-language-of-string
-
-// https://ru.wikipedia.org/wiki/ISO_15924
-// https://ru.wikipedia.org/wiki/Алфавиты_на_основе_латинского
-// https://ru.wikipedia.org/wiki/Алфавиты_на_основе_кириллицы
-
-//TODO: add another languages https://github.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words?tab=readme-ov-file
-
-// TODO: fix case:
-// const censor = new Censure({
-//   languages: ['fi'],
-//   debug: false
-// });
-
-// const text = `
-// aaavittuaa
-// vittu,
-// `
 
 export interface FilterOptions {
   placeholder?: string
@@ -31,7 +7,7 @@ export interface FilterOptions {
   debug?: boolean
 }
 
-export type Languages = 'ru' | 'en' | 'fi'
+export type Languages = 'ru' | 'en' | 'fi' | 'sv'
 
 /**
  * ProfanityFilter class provides methods to detect and replace abusive words in a given text.
@@ -213,6 +189,9 @@ class ProfanityFilter {
       }
       if (this.languages.includes('fi')) {
         patterns = [...patterns, ...fi];
+      }
+      if (this.languages.includes('sv')) {
+        patterns = [...patterns, ...sv];
       }
       //TODO: sorted patterns with few langs (en and fi)
       // or maybe sort it in construct new ProfnityFilter()
