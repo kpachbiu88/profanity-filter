@@ -1,4 +1,4 @@
-import { ru, en, fi, sv } from './patterns';
+import { ru, en, fi, sv, zh } from './patterns';
 import { replaceRu } from './replaces';
 
 export interface FilterOptions {
@@ -7,7 +7,7 @@ export interface FilterOptions {
   debug?: boolean
 }
 
-export type Languages = 'ru' | 'en' | 'fi' | 'sv'
+export type Languages = 'ru' | 'en' | 'fi' | 'sv' | 'zh'
 
 /**
  * ProfanityFilter class provides methods to detect and replace abusive words in a given text.
@@ -58,7 +58,7 @@ class ProfanityFilter {
       const wordParts = this.getCleanedWords(words[i])
       
       for (const w of wordParts) {
-        if (w.length < 3) continue;
+        // if (w.length < 3) continue;
         const match = this.search(w)
         if (match) {
           return true
@@ -79,7 +79,7 @@ class ProfanityFilter {
       const wordParts = this.getCleanedWords(words[i]);
 
       for (const w of wordParts) {
-        if (w.length < 3) continue;
+        // if (w.length < 3) continue;
         const match = this.search(w)
 
         if (match) {
@@ -101,8 +101,10 @@ class ProfanityFilter {
 
     if (/\p{Script=Latin}/ui.test(string)) {
       result = string.replace(/[^\p{Script=Latin}]/ug, ' ').trim();
-    } else if (/\p{Script=Latin}/ui.test(string)) {
+    } else if (/\p{Script=Cyrillic}/ui.test(string)) {
       result = string.replace(/[^\p{Script=Cyrillic}]/ug, ' ').trim();
+    } else if (/\p{Script=Han}/ui.test(string)) {
+      result = string.replace(/[^\p{Script=Han}]/ug, ' ').trim();
     }
     return result.trim().split(/\s+/g);
   }
@@ -180,22 +182,18 @@ class ProfanityFilter {
   private getPatterns(string: string): string[] {
     let patterns: string[] = []
 
-    //Cyrillic languages
+    // https://en.wikipedia.org/wiki/ISO_15924
     if (this.languages.includes('ru') && /\p{Script=Cyrillic}/ui.test(string)) {
       patterns = ru;
     } else if (/\p{Script=Latin}/ui.test(string)) {
-      if (this.languages.includes('en')) {
-        patterns = [...patterns, ...en];
-      }
-      if (this.languages.includes('fi')) {
-        patterns = [...patterns, ...fi];
-      }
-      if (this.languages.includes('sv')) {
-        patterns = [...patterns, ...sv];
-      }
-      //TODO: sorted patterns with few langs (en and fi)
-      // or maybe sort it in construct new ProfnityFilter()
+      if (this.languages.includes('en')) patterns.push(...en);
+      if (this.languages.includes('fi')) patterns.push(...fi);
+      if (this.languages.includes('sv')) patterns.push(...sv);
+    } else if (/\p{Script=Han}/ui.test(string)) {
+      if (this.languages.includes('zh')) patterns.push(...zh)
     }
+    //TODO: sorted patterns with few langs (en and fi)
+    // or maybe sort it in construct new ProfnityFilter()
     return patterns
   }
 
