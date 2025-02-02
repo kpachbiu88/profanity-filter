@@ -24,7 +24,7 @@ This Regex based TypeScript library provides robust and customizable filtering o
 
 ## Support languages
 
-English, Russian, Finnish, Swedish
+English, Russian, Finnish, Swedish, Chinese
 
 [Welcome to contribute more languages](#Contribution)
 
